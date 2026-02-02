@@ -1,9 +1,24 @@
-void setup() {
-  // put your setup code here, to run once:
+// Define pin for LDR
+const int inputPin = A0; 
 
+// Define booleans
+bool night;
+
+void setup() {
+  
+  pinMode(inputPin, INPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  night = isNight();
+}
+
+bool isNight() {
+  
+  if (analogRead(inputPin) < 200) {
+    return true;
+  } 
+  return false;
 
 }
