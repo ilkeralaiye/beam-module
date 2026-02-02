@@ -9,11 +9,19 @@ const int triggerPin = 9;
 bool night;
 bool carFront;
 
+// Define LED pins
+const int lowBeam = 12;
+const int highBeam = 13;
+
 void setup() {
   
   pinMode(inputPin, INPUT);
+
   pinMode(triggerPin, OUTPUT);
   pinMode(echoPin, INPUT);
+
+  pinMode(lowBeam, OUTPUT);
+  pinMode(highBeam, OUTPUT);
 
   Serial.begin(9600);
 }
@@ -23,10 +31,23 @@ void loop() {
   night = isNight();
   carFront = isCarFront();
 
-  Serial.print("Night: ");Serial.println(night);
-  Serial.print("carFront: ");Serial.println(carFront);
+//  Serial.print("Night: ");Serial.println(night);
+//  Serial.print("carFront: ");Serial.println(carFront);
 
-  delay(1000);
+  if (night) {
+
+    digitalWrite(lowBeam, HIGH);
+    if (carFront) {
+      digitalWrite(highBeam, LOW);
+    } else {
+      digitalWrite(highBeam, HIGH);
+    }
+
+  } else {
+
+    digitalWrite(lowBeam, LOW);
+    digitalWrite(highBeam, LOW);
+  }
 
 }
 
@@ -55,8 +76,9 @@ float getDistance() {
 
 bool isNight() {
   
-  if (analogRead(inputPin) < 200) {
+  if (analogRead(inputPin) < 50) {
     return true;
   } 
   return false;
 }
+
